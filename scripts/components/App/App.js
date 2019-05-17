@@ -1,6 +1,7 @@
 import { Table } from '../Table/Table.js';
 import { Portfolio } from '../Portfolio/Portfolio.js';
 import { TradeWidget } from '../TradeWidget/TradeWidget.js';
+import { FilterField } from '../Table/FIlterField.js';
 
 
 import DataService from '../../services/DataService.js';
@@ -18,7 +19,8 @@ export class App {
     });
 
     this._initPortfolio();
-    this._initTradeWidget();    
+    this._initTradeWidget();
+    this._initFilterField();
   } 
   
   tradeItem(id) {
@@ -54,6 +56,12 @@ export class App {
       this.tradeItem(e.detail.id)
     })
   }
+
+  _initFilterField() {
+    this._filterField = new FilterField({
+      element: this._el.querySelector('[data-element="filter-field"]')
+    });
+  }
     
      _render() {
         this._el.innerHTML = `
@@ -65,7 +73,9 @@ export class App {
             <div class="row portfolio-row">
                 <div class="col s6 offset-s6" data-element="portfolio"></div>
             </div>
-
+            <div data-element="filter-field">
+            
+            </div>
             <div class="row">
               <div data-element="table" class="col s12"></div>
             </div>

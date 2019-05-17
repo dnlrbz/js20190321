@@ -35,8 +35,8 @@ export class Portfolio {
             <ul class="collapsible portfolio">
               <li>
                 <p class="collapsible-header">
-                    Current balance: ${this._balance}.
-                    Portfolio Worth: ${this._portfolioWorth}
+                    Current balance: ${Math.round(this._balance*100)/100}.
+                    Portfolio Worth: ${Math.round(this._portfolioWorth*100)/100}
                 </p>
                 <div class="collapsible-body">
                 ${
@@ -58,8 +58,8 @@ export class Portfolio {
                             <tr data-id="${item.id}">
                                 <td>${item.name}</td>
                                 <td>${item.amount}</td>
-                                <td>${item.price}</td>
-                                <td>${item.total}</td>
+                                <td>${Math.round(item.price*100)/100}</td>
+                                <td>${Math.round(item.total*100)/100}</td>
                             </tr>
                           `).join('')}
                       </tbody>
