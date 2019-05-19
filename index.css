@@ -44,3 +44,8 @@ tr td {
 form, form > div {
     padding-left: 0 !important;
 }
+
+.hint {
+    white-space: pre-line;
+    font-size: 1.5em;
+}

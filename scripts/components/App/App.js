@@ -59,23 +59,30 @@ export class App {
 
   _initFilterField() {
     this._filterField = new FilterField({
-      element: this._el.querySelector('[data-element="filter-field"]')
+      element: this._el.querySelector('[data-element="input-field"]'),
+      callback: (a) => {
+
+        this._table.filterByName.call(this._table, a)},
     });
   }
-    
+
+
      _render() {
         this._el.innerHTML = `
             <div class="row">
                 <div class="col s12">
                     <h1>Tiny Crypto Market</h1>
+                    
                 </div>
             </div>
             <div class="row portfolio-row">
                 <div class="col s6 offset-s6" data-element="portfolio"></div>
             </div>
-            <div data-element="filter-field">
             
-            </div>
+       
+            <div data-element="input-field"></div>
+          
+
             <div class="row">
               <div data-element="table" class="col s12"></div>
             </div>

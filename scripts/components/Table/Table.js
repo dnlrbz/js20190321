@@ -5,11 +5,15 @@ export class Table extends BaseComponent {
     super();
     
     this._el = element;
-
+    this._data = data;
      
-    this._render(data);
+    this._render(this._data);
 
     this._el.addEventListener('click', e => {
+      if (e.target.closest('th')) {
+        const columnName = e.target.innerHTML;
+        this.sortByColumnName(columnName);
+      }
       this._onRowClick(e);
     })
   }
@@ -26,9 +30,40 @@ export class Table extends BaseComponent {
       this._el.dispatchEvent(rowClickEvent);
     }
   }
-    
-     _render(data) {
-        this._el.innerHTML = `
+
+  filterByName(name) {
+
+    let result = this._data.filter((coin) => {
+      return coin.name.toLowerCase().indexOf(name.toLowerCase())!==-1;
+    });
+    this._render(result);
+  }
+
+  sortByColumnName(columnName) {
+    //let columnData = this._data.map( item => item[columnName.toLowerCase()]);
+
+    if (columnName.toLowerCase() === 'symbol' || columnName.toLowerCase() === 'name') {
+      this._data.sort(function (a,b) {
+
+        return a[columnName.toLowerCase()].localeCompare(b[columnName.toLowerCase()]);
+      })
+    } else {
+      this._data.sort(function (a,b) {
+        return a[columnName.toLowerCase()] - b[columnName.toLowerCase()];
+      })
+    }
+
+    this._render(this._data);
+
+
+
+
+  }
+
+
+
+  _render(data) {
+      this._el.innerHTML = `
         <table class="data-table highlight"> 
           <thead>
             <tr>
@@ -52,5 +87,5 @@ export class Table extends BaseComponent {
           </tbody>
         </table>
         `;
-    }
+  }
 }
