@@ -1,6 +1,7 @@
 import { Table } from '../Table/Table.js';
 import { Portfolio } from '../Portfolio/Portfolio.js';
 import { TradeWidget } from '../TradeWidget/TradeWidget.js';
+import { FilterField } from '../Table/FIlterField.js';
 
 
 import DataService from '../../services/DataService.js';
@@ -12,14 +13,14 @@ export class App {
      
     this._render();
 
-    this._data = DataService.getCurrencies();
+    DataService.getCurrencies(data => {
+      this._data = data;
+      this._initTable(this._data);
+    });
 
     this._initPortfolio();
     this._initTradeWidget();
-
-    
-    this._initTable(this._data);
-
+    this._initFilterField();
   } 
   
   tradeItem(id) {
@@ -38,26 +39,49 @@ export class App {
     this._tradeWidget = new TradeWidget({
       element: this._el.querySelector('[data-element="trade-widget"]'),
     })
+
+    this._tradeWidget.on('buy', e => {
+      const { item, amount } = e.detail;
+      this._portfolio.addItem(item, amount);
+    })
   }
 
   _initTable(data) {
     this._table = new Table({
       data,
       element: this._el.querySelector('[data-element="table"]'),
-      onRowClick: id => this.tradeItem(id),
+    })
+
+    this._table.on('rowClick', e => {
+      this.tradeItem(e.detail.id)
     })
   }
-    
+
+  _initFilterField() {
+    this._filterField = new FilterField({
+      element: this._el.querySelector('[data-element="input-field"]'),
+      callback: (a) => {
+
+        this._table.filterByName.call(this._table, a)},
+    });
+  }
+
+
      _render() {
         this._el.innerHTML = `
             <div class="row">
                 <div class="col s12">
                     <h1>Tiny Crypto Market</h1>
+                    
                 </div>
             </div>
             <div class="row portfolio-row">
                 <div class="col s6 offset-s6" data-element="portfolio"></div>
             </div>
+            
+       
+            <div data-element="input-field"></div>
+          
 
             <div class="row">
               <div data-element="table" class="col s12"></div>
